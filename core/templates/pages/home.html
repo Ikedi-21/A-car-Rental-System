@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Driftwood Motors — Premium Car Rentals{% endblock %}
+
+{% block content %}
+
+<!-- Hero: full-width banner with search bar overlapping the bottom edge.
+     Search bar is a plain GET form to car_list so filters land in the URL
+     and are shareable/bookmarkable. -->
+<section class="dw-hero">
+    <div class="dw-hero-overlay">
+        <div class="container">
+            <div class="dw-hero-text">
+                <h1>Premium car rentals,<br>honest mileage</h1>
+                <p class="dw-hero-sub">Experience the road like never before. Engineering-ready elegance for your journey.</p>
+                <a href="{% url 'car_list' %}" class="btn dw-btn-primary btn-lg">Browse Cars</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search bar sits half on the hero, half on the page below it —
+         hence the negative margin trick in style.css (.dw-search-bar) -->
+    <div class="container">
+        <form method="get" action="{% url 'car_list' %}" class="dw-search-bar">
+            <div class="row g-2 align-items-center">
+                <div class="col-md-3">
+                    <input type="text" name="location" class="form-control" placeholder="Pickup location">
+                </div>
+                <div class="col-md-3">
+                    <input type="date" name="pickup_date" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <input type="date" name="return_date" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn dw-btn-primary w-100">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Curated Classes — these map straight to the Car.category choices,
+     so "Small" / "Premium" / "Large" links just pre-filter car_list by category -->
+<section class="container dw-section">
+    <h2>Curated Classes</h2>
+    <p class="dw-text-muted">Find the perfect silhouette for your itinerary, from nimble city drivers to commanding executive transport.</p>
+
+    <div class="row g-4 mt-2">
+        <div class="col-md-4">
+            <a href="{% url 'car_list' %}?category=small" class="dw-class-card text-decoration-none">
+                <img src="{% static 'images/categories/small.jpg' %}" alt="Small cars" class="img-fluid rounded">
+                <h5 class="mt-3">Small</h5>
+                <p class="dw-text-muted small">Perfect for city navigation and efficient weekend getaways.</p>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{% url 'car_list' %}?category=premium" class="dw-class-card text-decoration-none">
+                <img src="{% static 'images/categories/premium.jpg' %}" alt="Premium cars" class="img-fluid rounded">
+                <h5 class="mt-3">Premium</h5>
+                <p class="dw-text-muted small">Sophisticated saloons blending executive comfort with performance.</p>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{% url 'car_list' %}?category=large" class="dw-class-card text-decoration-none">
+                <img src="{% static 'images/categories/large.jpg' %}" alt="Large cars" class="img-fluid rounded">
+                <h5 class="mt-3">Large</h5>
+                <p class="dw-text-muted small">Commanding SUVs and full-size options for extended comfort.</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- The Executive Fleet — this is the only part of the home page that's
+     dynamic, everything above is basically static marketing content.
+     featured_cars gets passed in from the view (e.g. is_featured=True, limit 4) -->
+<section class="container dw-section">
+    <div class="d-flex justify-content-between align-items-end">
+        <h2>The Executive Fleet</h2>
+        <a href="{% url 'car_list' %}" class="dw-text-accent text-decoration-none">View all &rarr;</a>
+    </div>
+
+    <div class="row g-4 mt-2">
+        {% for car in featured_cars %}
+            {% include 'includes/car_card.html' with car=car %}
+        {% empty %}
+            <!-- Shouldn't normally hit this on a live site, but keeps the
+                 page from looking broken if the DB hasn't been seeded yet -->
+            <p class="dw-text-muted">No featured vehicles available right now — check back soon.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Testimonials — pulling only is_active=True ones, ordered newest first,
+     capped at 3 from the view so this section doesn't grow unbounded -->
+<section class="dw-testimonial-section">
+    <div class="container dw-section">
+        <h2>The Driftwood Standard</h2>
+        <p class="dw-text-muted">Don't just take our word for it — hear from clients who've trusted us to get them where they're going.</p>
+
+        <div class="row g-4 mt-2">
+            {% for testimonial in testimonials %}
+            <div class="col-md-6">
+                <div class="dw-card p-4 h-100">
+                    <div class="dw-stars mb-2">
+                        {% for i in "12345" %}<i class="bi bi-star-fill"></i>{% endfor %}
+                    </div>
+                    <p class="fst-italic">"{{ testimonial.message }}"</p>
+                    <div class="d-flex align-items-center gap-2 mt-3">
+                        <div class="dw-avatar-placeholder"></div>
+                        <span class="fw-medium">{{ testimonial.user.get_full_name|default:testimonial.user.username }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

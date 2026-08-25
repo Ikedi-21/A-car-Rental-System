@@ -1,0 +1,75 @@
+/* ---------- Home: hero section ---------- */
+.dw-hero {
+    background-image: linear-gradient(rgba(22, 27, 46, 0.55), rgba(22, 27, 46, 0.75)),
+    url('../images/hero-banner.jpg');
+    background-size: cover;
+    background-position: center;
+    padding-top: 100px;
+    padding-bottom: 90px; /* extra bottom padding so the overlapping search bar has room */
+}
+.dw-hero-text h1 {
+    color: var(--dw-white);
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+}
+.dw-hero-sub {
+    color: #D8DAE2;
+    max-width: 480px;
+    margin-bottom: 24px;
+}
+
+/* Search bar overlapping the hero/page boundary — negative margin pulls it
+   up into the hero image while the white card keeps it readable */
+.dw-search-bar {
+    background-color: var(--dw-white);
+    border-radius: 8px;
+    padding: 18px;
+    margin-top: -50px;
+    box-shadow: 0 10px 30px rgba(22, 27, 46, 0.15);
+    position: relative;
+    z-index: 2;
+}
+
+/* ---------- Section spacing ---------- */
+.dw-section {
+    padding-top: 60px;
+    padding-bottom: 20px;
+}
+.dw-section h2 {
+    font-weight: 700;
+    color: var(--dw-primary);
+}
+
+/* ---------- Curated class cards ---------- */
+.dw-class-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+.dw-class-card h5, .dw-class-card p {
+    color: var(--dw-primary);
+}
+
+/* ---------- Car card image ---------- */
+.dw-car-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+}
+
+/* ---------- Testimonials ---------- */
+.dw-testimonial-section {
+    background-color: #F5F3EE; /* very slightly warmer than page bg, just enough to separate the section visually */
+}
+.dw-stars {
+    color: var(--dw-accent);
+    font-size: 0.85rem;
+}
+.dw-avatar-placeholder {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--dw-secondary);
+}
