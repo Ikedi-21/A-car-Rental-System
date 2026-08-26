@@ -73,3 +73,167 @@
     border-radius: 50%;
     background-color: var(--dw-secondary);
 }
+
+/* ---------- Breadcrumb ---------- */
+.dw-breadcrumb {
+    background: none;
+    padding: 0;
+    margin-bottom: 8px;
+}
+.dw-breadcrumb a {
+    color: var(--dw-secondary);
+    text-decoration: none;
+}
+.dw-breadcrumb .active {
+    color: var(--dw-muted);
+}
+
+/* ---------- Filter sidebar ---------- */
+#filterForm .form-check-label {
+    color: var(--dw-primary);
+}
+#filterForm .form-check-input:checked {
+    background-color: var(--dw-accent);
+    border-color: var(--dw-accent);
+}
+
+/* ---------- Pagination ---------- */
+.pagination .page-link {
+    color: var(--dw-primary);
+    border-color: #E1E4EA;
+}
+.pagination .page-item.active .page-link {
+    background-color: var(--dw-secondary);
+    border-color: var(--dw-secondary);
+}
+.pagination .page-item.disabled .page-link {
+    color: var(--dw-muted);
+}
+/* ---------- Car detail: gallery ---------- */
+.dw-detail-main-img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+}
+.dw-thumb-row {
+    overflow-x: auto;
+}
+.dw-thumb {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 0.6;
+    border: 2px solid transparent;
+    transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+.dw-thumb:hover {
+    opacity: 0.85;
+}
+.dw-thumb.active {
+    opacity: 1;
+    border-color: var(--dw-accent);
+}
+
+/* ---------- Booking card ---------- */
+.dw-booking-card {
+    position: sticky;
+    top: 90px; /* clears the sticky navbar height */
+}
+.dw-price-large {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--dw-accent);
+}
+.dw-total-row {
+    background-color: var(--dw-bg);
+    padding: 10px 14px;
+    border-radius: 6px;
+}
+
+/* ---------- Tabs ---------- */
+.dw-tabs .nav-link {
+    color: var(--dw-muted);
+    border: none;
+    border-bottom: 2px solid transparent;
+}
+.dw-tabs .nav-link.active {
+    color: var(--dw-primary);
+    border-bottom-color: var(--dw-accent);
+    background: none;
+}
+
+/* ---------- Spec list ---------- */
+.dw-spec-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #EEF0F3;
+}
+.dw-spec-list li span {
+    color: var(--dw-muted);
+}
+
+/* ---------- Responsive: booking card unsticks on mobile ---------- */
+@media (max-width: 991px) {
+    .dw-booking-card {
+        position: static;
+    }
+}
+/* ---------- Auth pages (login/register) ---------- */
+.dw-auth-wrap {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+}
+
+/* Django form widgets don't come with Bootstrap classes by default —
+   rather than adding a widget_tweaks dependency for two forms, targeting
+   the raw <input> tags directly here is simpler for a project this size */
+.dw-auth-wrap input[type="text"],
+.dw-auth-wrap input[type="email"],
+.dw-auth-wrap input[type="password"],
+.dw-auth-wrap input[type="tel"] {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #D7DAE1;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+.dw-auth-wrap input:focus {
+    outline: none;
+    border-color: var(--dw-accent);
+    box-shadow: 0 0 0 0.2rem rgba(176, 141, 61, 0.15);
+}
+
+.dw-password-wrap {
+    position: relative;
+}
+.dw-password-wrap input {
+    padding-right: 40px; /* leaves room for the eye icon button */
+}
+.dw-toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--dw-muted);
+    padding: 4px;
+}
+.dw-toggle-password:hover {
+    color: var(--dw-primary);
+}
+
+.dw-field-error {
+    color: var(--dw-danger);
+    font-size: 0.8rem;
+    margin-top: 4px;
+}
+.dw-help-text {
+    color: var(--dw-muted);
+    font-size: 0.78rem;
+    margin-top: 4px;
+}

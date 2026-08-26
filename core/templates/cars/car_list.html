@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Browse Our Fleet — Driftwood Motors{% endblock %}
+
+{% block content %}
+
+<div class="container dw-section">
+
+    <!-- Breadcrumb — simple, no need for a package for two levels -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb dw-breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">Cars</li>
+        </ol>
+    </nav>
+
+    <h1>Browse Our Fleet</h1>
+    <p class="dw-text-muted">Discover your perfect match from our curated selection of high-end vehicles.</p>
+
+    <div class="row mt-4">
+
+        <!-- Filters sidebar. This is a GET form on purpose — filters live in
+             the querystring so results are bookmarkable/shareable, and it
+             means the view can just read request.GET instead of session state -->
+        <div class="col-lg-3 mb-4">
+            <form method="get" id="filterForm">
+                <div class="dw-card p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="mb-0">Filters</h6>
+                        <a href="{% url 'car_list' %}" class="small dw-text-accent text-decoration-none">Clear All</a>
+                    </div>
+
+                    <!-- Category -->
+                    <p class="fw-medium small mb-2">Category</p>
+                    {% for value, label in category_choices %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="category" value="{{ value }}"
+                               id="cat_{{ value }}"
+                               {% if value in selected_categories %}checked{% endif %}>
+                        <label class="form-check-label small" for="cat_{{ value }}">{{ label }}</label>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Brand — dynamic, comes from whatever brands actually exist in the DB -->
+                    <p class="fw-medium small mb-2 mt-3">Brand</p>
+                    {% for brand in brands %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="brand" value="{{ brand.id }}"
+                               id="brand_{{ brand.id }}"
+                               {% if brand.id|stringformat:"s" in selected_brands %}checked{% endif %}>
+                        <label class="form-check-label small" for="brand_{{ brand.id }}">{{ brand.name }}</label>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Fuel type -->
+                    <p class="fw-medium small mb-2 mt-3">Fuel Type</p>
+                    {% for value, label in fuel_choices %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="fuel_type" value="{{ value }}"
+                               id="fuel_{{ value }}"
+                               {% if value in selected_fuel_types %}checked{% endif %}>
+                        <label class="form-check-label small" for="fuel_{{ value }}">{{ label }}</label>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Price range — plain min/max inputs rather than a JS slider.
+                         A real slider looks nicer but a slider needs its own JS
+                         library and isn't worth it for two number inputs -->
+                    <p class="fw-medium small mb-2 mt-3">Price Range ($/day)</p>
+                    <div class="d-flex gap-2">
+                        <input type="number" name="min_price" class="form-control form-control-sm"
+                               placeholder="Min" value="{{ min_price|default:'' }}">
+                        <input type="number" name="max_price" class="form-control form-control-sm"
+                               placeholder="Max" value="{{ max_price|default:'' }}">
+                    </div>
+
+                    <!-- Transmission -->
+                    <p class="fw-medium small mb-2 mt-3">Transmission</p>
+                    <select name="transmission" class="form-select form-select-sm">
+                        <option value="">All</option>
+                        <option value="automatic" {% if selected_transmission == 'automatic' %}selected{% endif %}>Automatic</option>
+                        <option value="manual" {% if selected_transmission == 'manual' %}selected{% endif %}>Manual</option>
+                    </select>
+
+                    <button type="submit" class="btn dw-btn-primary w-100 mt-4">Apply Filters</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Results -->
+        <div class="col-lg-9">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <p class="dw-text-muted mb-0">Showing {{ cars.paginator.count }} vehicle{{ cars.paginator.count|pluralize }}</p>
+
+                <!-- Sort re-submits the same filter form with an added ?sort= param.
+                     Kept as its own small form rather than JS-injecting a hidden
+                     input, so it still works if JS fails to load. -->
+                <form method="get" class="d-flex align-items-center gap-2">
+                    {% for key, values in current_filters.items %}
+                        {% for v in values %}<input type="hidden" name="{{ key }}" value="{{ v }}">{% endfor %}
+                    {% endfor %}
+                    <label class="small dw-text-muted mb-0">Sort by</label>
+                    <select name="sort" class="form-select form-select-sm" onchange="this.form.submit()" style="width: auto;">
+                        <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                        <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                        <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest</option>
+                    </select>
+                </form>
+            </div>
+
+            <div class="row g-4">
+                {% for car in cars %}
+                    {% include 'includes/car_card.html' with car=car %}
+                {% empty %}
+                    <!-- Empty state — better than just showing a blank grid
+                         when a filter combo returns nothing -->
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-emoji-frown dw-text-muted" style="font-size: 2rem;"></i>
+                        <p class="dw-text-muted mt-2">No cars match your filters.</p>
+                        <a href="{% url 'car_list' %}" class="btn dw-btn-outline btn-sm">Clear Filters</a>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination — Django's built-in Paginator object, nothing custom.
+                 Preserves existing querystring via the request.GET.urlencode trick
+                 so filters don't get wiped out when you click page 2 -->
+            {% if cars.has_other_pages %}
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item {% if not cars.has_previous %}disabled{% endif %}">
+                        <a class="page-link" href="?page={{ cars.previous_page_number }}&{{ request.GET.urlencode }}">&laquo;</a>
+                    </li>
+                    {% for num in cars.paginator.page_range %}
+                        <li class="page-item {% if cars.number == num %}active{% endif %}">
+                            <a class="page-link" href="?page={{ num }}&{{ request.GET.urlencode }}">{{ num }}</a>
+                        </li>
+                    {% endfor %}
+                    <li class="page-item {% if not cars.has_next %}disabled{% endif %}">
+                        <a class="page-link" href="?page={{ cars.next_page_number }}&{{ request.GET.urlencode }}">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

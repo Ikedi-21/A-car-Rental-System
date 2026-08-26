@@ -15,8 +15,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),          # Django's built-in admin, separate from our custom dashboard app
+    path('', include('pages.urls')),
+    path('cars/', include('cars.urls')),
+    path('accounts/', include('accounts.urls')),
 ]
+
+# only serves media files like this in development — in production this
+# needs a real web server (nginx etc.) handling it instead
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

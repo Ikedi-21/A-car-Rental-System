@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ car.brand.name }} {{ car.name }} — Driftwood Motors{% endblock %}
+
+{% block content %}
+
+<div class="container dw-section">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb dw-breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'car_list' %}">Cars</a></li>
+            <li class="breadcrumb-item active">{{ car.brand.name }} {{ car.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+
+        <!-- Gallery column -->
+        <div class="col-lg-7">
+            <div class="position-relative">
+                {% if car.category == 'premium' %}
+                    <span class="badge dw-badge-premium position-absolute top-0 start-0 m-2">Premium</span>
+                {% elif car.category == 'small' %}
+                    <span class="badge dw-badge-small position-absolute top-0 start-0 m-2">Small</span>
+                {% else %}
+                    <span class="badge dw-badge-large position-absolute top-0 start-0 m-2">Large</span>
+                {% endif %}
+
+                <img id="mainCarImage"
+                     src="{% if car.image %}{{ car.image.url }}{% else %}{% static 'images/car-placeholder.jpg' %}{% endif %}"
+                     alt="{{ car.brand.name }} {{ car.name }}" class="img-fluid rounded dw-detail-main-img">
+            </div>
+
+            <!-- Thumbnails swap the main image on click — see car-detail.js.
+                 Not building a full carousel here since Bootstrap's carousel
+                 JS is heavier than this actually needs. -->
+            {% if car.gallery_images.all %}
+            <div class="d-flex gap-2 mt-3 dw-thumb-row">
+                <img src="{{ car.image.url }}" class="dw-thumb active" data-full="{{ car.image.url }}">
+                {% for img in car.gallery_images.all %}
+                    <img src="{{ img.image.url }}" class="dw-thumb" data-full="{{ img.image.url }}">
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Booking card column -->
+        <div class="col-lg-5">
+            <div class="dw-card p-4 dw-booking-card">
+                <h3 class="mb-1">{{ car.brand.name }} {{ car.name }}</h3>
+                <p class="dw-text-muted mb-3">{{ car.get_category_display }} &middot; {{ car.get_category_display }} Class</p>
+
+                <div class="d-flex align-items-baseline gap-2 mb-3">
+                    <span class="dw-price-large">${{ car.price_per_day }}</span>
+                    <span class="dw-text-muted">/ day</span>
+                </div>
+
+                <div class="d-flex flex-wrap gap-3 dw-text-muted small mb-4">
+                    <span><i class="bi bi-gear"></i> {{ car.transmission }}</span>
+                    <span><i class="bi bi-fuel-pump"></i> {{ car.fuel_type }}</span>
+                    <span><i class="bi bi-people"></i> {{ car.seats }} Seats</span>
+                </div>
+
+                <!-- This posts straight to the bookings app. total_price is
+                     shown live via JS for the user's benefit, but note it's
+                     NOT trusted — the view recalculates it server-side from
+                     pickup/return dates before saving, since a client can
+                     tamper with anything in a form. -->
+                <form method="post" action="{% url 'create_booking' car.id %}" id="bookingForm">
+                    {% csrf_token %}
+
+                    <label class="dw-label">Pickup Location</label>
+                    <select name="pickup_location" class="form-select mb-3" required>
+                        <option value="">Select location</option>
+                        <option value="downtown">Downtown Branch</option>
+                        <option value="airport">Airport Branch</option>
+                    </select>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="dw-label">Pickup</label>
+                            <input type="date" name="pickup_date" id="pickupDate" class="form-control" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="dw-label">Return</label>
+                            <input type="date" name="return_date" id="returnDate" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center dw-total-row mb-3">
+                        <span class="fw-medium">Total (<span id="dayCount">0</span> days)</span>
+                        <span class="fw-bold dw-text-accent" id="totalPrice">$0</span>
+                    </div>
+
+                    <!-- price_per_day exposed as a data attribute so the JS
+                         doesn't need a separate fetch just to know the rate -->
+                    <button type="submit" class="btn dw-btn-primary w-100" data-price-per-day="{{ car.price_per_day }}">
+                        Book Now
+                    </button>
+                    <p class="dw-text-muted small text-center mt-2 mb-0">Free cancellation up to 48 hours before pickup</p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Description / Specs tabs -->
+    <div class="dw-section">
+        <ul class="nav nav-tabs dw-tabs" id="carTabs" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#description">Description</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#specifications">Specifications</button>
+            </li>
+        </ul>
+
+        <div class="tab-content dw-card p-4">
+            <div class="tab-pane fade show active" id="description">
+                <p>{{ car.description }}</p>
+            </div>
+            <div class="tab-pane fade" id="specifications">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-unstyled dw-spec-list">
+                            <li><span>Transmission</span><strong>{{ car.transmission }}</strong></li>
+                            <li><span>Fuel Type</span><strong>{{ car.fuel_type }}</strong></li>
+                            <li><span>Seats</span><strong>{{ car.seats }}</strong></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-unstyled dw-spec-list">
+                            <li><span>Category</span><strong>{{ car.get_category_display }}</strong></li>
+                            <li><span>Brand</span><strong>{{ car.brand.name }}</strong></li>
+                            <li><span>Availability</span><strong>{% if car.is_available %}Available{% else %}Unavailable{% endif %}</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Similar cars — same category, excluding this one, capped in the view -->
+    {% if similar_cars %}
+    <div class="dw-section">
+        <h4 class="mb-3">Explore Similar Vehicles</h4>
+        <div class="row g-4">
+            {% for similar in similar_cars %}
+                {% include 'includes/car_card.html' with car=similar %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/car-detail.js' %}"></script>
+{% endblock %}

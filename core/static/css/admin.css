@@ -1,0 +1,146 @@
+/* ============ Admin panel — layout only. Colors/fonts/buttons all come
+   from style.css so the admin side doesn't drift into its own theme ============ */
+
+.dw-admin-body {
+    background-color: var(--dw-bg);
+}
+
+.dw-admin-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ---------- Sidebar ---------- */
+.dw-admin-sidebar {
+    width: 240px;
+    background-color: var(--dw-primary);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    flex-shrink: 0;
+}
+
+.dw-admin-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    color: var(--dw-white);
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.dw-admin-nav {
+    flex: 1;
+    padding: 16px 10px;
+    overflow-y: auto;
+}
+.dw-admin-nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    color: var(--dw-muted);
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.92rem;
+    margin-bottom: 2px;
+}
+.dw-admin-nav a:hover {
+    background-color: rgba(255,255,255,0.05);
+    color: var(--dw-white);
+}
+/* Active state uses the accent color as a left-border rather than a full
+   background fill — reads as "you are here" without looking like a
+   selected/highlighted button, which is a different signal */
+.dw-admin-nav a.active {
+    background-color: rgba(176, 141, 61, 0.12);
+    color: var(--dw-accent);
+    border-left: 3px solid var(--dw-accent);
+    padding-left: 11px; /* compensate for the border eating into padding */
+}
+
+.dw-admin-sidebar-footer {
+    padding: 14px 10px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+.dw-admin-sidebar-footer a,
+.dw-admin-sidebar-footer button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 14px;
+    background: none;
+    border: none;
+    color: var(--dw-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    text-align: left;
+}
+.dw-admin-sidebar-footer a:hover,
+.dw-admin-sidebar-footer button:hover {
+    color: var(--dw-danger);
+}
+
+/* ---------- Main content area ---------- */
+.dw-admin-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* prevents flex children (e.g. wide tables) from
+                     forcing the whole layout wider than the viewport */
+}
+.dw-admin-topbar {
+    background-color: var(--dw-white);
+    border-bottom: 1px solid #E1E4EA;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+}
+.dw-sidebar-toggle {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: var(--dw-primary);
+}
+.dw-admin-content {
+    padding: 24px;
+    flex: 1;
+}
+
+/* ---------- Common admin table styling, used across every list page ---------- */
+.dw-admin-table {
+    background-color: var(--dw-white);
+    border-radius: 8px;
+    overflow: hidden;
+}
+.dw-admin-table thead {
+    background-color: var(--dw-bg);
+}
+.dw-admin-table th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--dw-muted);
+    font-weight: 600;
+}
+.dw-admin-table td {
+    vertical-align: middle;
+    font-size: 0.9rem;
+}
+
+/* ---------- Responsive: sidebar becomes an off-canvas drawer on mobile ---------- */
+@media (max-width: 991px) {
+    .dw-admin-sidebar {
+        position: fixed;
+        left: -240px;
+        z-index: 1050;
+        transition: left 0.25s ease;
+    }
+    .dw-admin-sidebar.open {
+        left: 0;
+    }
+}

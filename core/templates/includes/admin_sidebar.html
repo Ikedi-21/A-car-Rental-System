@@ -1,0 +1,62 @@
+{% load static %}
+<!-- request.resolver_match.url_name drives the "active" state below —
+     comparing against the current URL name rather than hardcoding a
+     class per page means this include never needs touching when new
+     admin pages get added, only the URL names need to match -->
+<aside class="dw-admin-sidebar" id="adminSidebar">
+    <div class="dw-admin-logo">
+        <img src="{% static 'images/logo.png' %}" alt="Driftwood Motors" height="26">
+        <span>Driftwood</span>
+    </div>
+
+    <nav class="dw-admin-nav">
+        <a href="{% url 'admin_dashboard' %}"
+           class="{% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">
+            <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+        <a href="{% url 'admin_brand_list' %}"
+           class="{% if 'brand' in request.resolver_match.url_name %}active{% endif %}">
+            <i class="bi bi-tags"></i> Brands
+        </a>
+        <a href="{% url 'admin_car_list' %}"
+           class="{% if 'car' in request.resolver_match.url_name %}active{% endif %}">
+            <i class="bi bi-car-front"></i> Vehicles
+        </a>
+        <a href="{% url 'admin_booking_list' %}"
+           class="{% if 'booking' in request.resolver_match.url_name %}active{% endif %}">
+            <i class="bi bi-calendar-check"></i> Bookings
+        </a>
+        <a href="{% url 'admin_testimonial_list' %}"
+           class="{% if 'testimonial' in request.resolver_match.url_name %}active{% endif %}">
+            <i class="bi bi-chat-quote"></i> Testimonials
+        </a>
+        <a href="{% url 'admin_query_list' %}"
+           class="{% if 'query' in request.resolver_match.url_name %}active{% endif %}">
+            <i class="bi bi-envelope"></i> Queries
+        </a>
+        <a href="{% url 'admin_user_list' %}"
+           class="{% if 'user' in request.resolver_match.url_name %}active{% endif %}">
+            <i class="bi bi-people"></i> Users
+        </a>
+        <a href="{% url 'admin_subscriber_list' %}"
+           class="{% if 'subscriber' in request.resolver_match.url_name %}active{% endif %}">
+            <i class="bi bi-envelope-paper"></i> Subscribers
+        </a>
+        <a href="{% url 'admin_site_content' %}"
+           class="{% if 'content' in request.resolver_match.url_name %}active{% endif %}">
+            <i class="bi bi-file-text"></i> Page Content
+        </a>
+        <a href="{% url 'admin_contact_details' %}"
+           class="{% if 'contact_details' in request.resolver_match.url_name %}active{% endif %}">
+            <i class="bi bi-telephone"></i> Contact Details
+        </a>
+    </nav>
+
+    <div class="dw-admin-sidebar-footer">
+        <a href="{% url 'admin_change_password' %}"><i class="bi bi-key"></i> Change Password</a>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit"><i class="bi bi-box-arrow-right"></i> Logout</button>
+        </form>
+    </div>
+</aside>

@@ -63,8 +63,8 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR/ 'templates'],
-        
+        'DIRS': [BASE_DIR / 'core' / 'templates'],
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -125,13 +125,24 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-
-
+STATICFILES_DIRS = [BASE_DIR / 'core' / 'static']
 
 MEDIA_URL = 'media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# --- Auth redirects ---
+# Sends users back to where Django's @login_required decorator expects
+# them, and where login/logout should land after success
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+
+# --- Email (for password reset) ---
+# Console backend just prints the reset email to the terminal instead of
+# actually sending it — fine for dev/grading, swap to SMTP only if you
+# need real emails going out
+DEFAULT_FROM_EMAIL = 'noreply@driftwoodmotors.com'
 
 
 # Email
