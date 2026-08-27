@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us — Driftwood Motors{% endblock %}
+
+{% block content %}
+
+<div class="container dw-section">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb dw-breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">About</li>
+        </ol>
+    </nav>
+
+    <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+            <h1>Our Story</h1>
+            <p class="dw-text-muted">
+                Driftwood Motors was founded on a simple idea: renting a car shouldn't feel
+                like a transaction — it should feel like the start of a good journey. Since our
+                first branch opened, we've built a fleet around one standard: every vehicle
+                leaves our lot exactly as promised, mileage and all.
+            </p>
+            <p class="dw-text-muted">
+                We work with a curated selection of small, premium, and large-class vehicles,
+                each maintained to the same exacting standard whether you're renting for a
+                weekend getaway or a client visit that needs to make the right impression.
+            </p>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="dw-card p-4">
+                <h5 class="mb-3">Our Mission</h5>
+                <p class="dw-text-muted mb-4">
+                    To make premium mobility honest, simple, and available to anyone who
+                    values their time on the road as much as their destination.
+                </p>
+
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="text-center p-3">
+                            <div class="dw-text-accent fs-3 fw-bold">1998</div>
+                            <div class="dw-text-muted small">Founded</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-center p-3">
+                            <div class="dw-text-accent fs-3 fw-bold">50+</div>
+                            <div class="dw-text-muted small">Vehicles</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

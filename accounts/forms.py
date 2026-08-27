@@ -1,6 +1,8 @@
 from django import forms
+from .models import Profile
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm 
 
 
 class RegisterForm(UserCreationForm):
@@ -26,3 +28,30 @@ class RegisterForm(UserCreationForm):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("An account with this email already exists.")
         return email
+    
+    
+
+class ProfileForm(forms.ModelForm):
+    """
+    Edits both User fields (name, email) and Profile fields (phone,
+    address) in one form. save() below handles writing to both models
+    since they're not the same table.
+    """
+    first_name = forms.CharField(max_length=30)
+    last_name = forms.CharField(max_length=30)
+    email = forms.EmailField()
+
+    class Meta:
+        model = Profile
+        fields = ['phone', 'address']
+
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        # user is attached in the view before calling save(), see profile_view
+        profile.user.first_name = self.cleaned_data['first_name']
+        profile.user.last_name = self.cleaned_data['last_name']
+        profile.user.email = self.cleaned_data['email']
+        if commit:
+            profile.user.save()
+            profile.save()
+        return profile

@@ -1,0 +1,54 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg dw-navbar sticky-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'home' %}">
+            <img src="{% static 'images/logo.png' %}" alt="Driftwood Motors" height="28">
+            <span>Driftwood Motors</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-4 style="postion: center;" ">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'car_list' %}active{% endif %}" href="{% url 'car_list' %}">Cars</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'about' %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact</a>
+                </li>
+            </ul>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <button class="btn dw-btn-ghost dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> {{ user.first_name|default:user.username }}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'booking_history' %}">My Bookings</a></li>
+                            <li><a class="dropdown-item" href="{% url 'change_password' %}">Change Password</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="post" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn dw-btn-ghost">Login</a>
+                    <a href="{% url 'register' %}" class="btn dw-btn-primary">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

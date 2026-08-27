@@ -9,3 +9,6 @@ def home_view(request):
         'testimonials': Testimonial.objects.filter(is_active=True).order_by('-created_at')[:2],
     }
     return render(request, 'pages/home.html', context)
+
+def about_view(request):
+    return render(request, 'pages/about.html')

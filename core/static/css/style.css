@@ -1,3 +1,178 @@
+/* ============ Driftwood Motors — Midnight Indigo theme ============ */
+
+:root {
+    --dw-primary: #161B2E;      /* Midnight Indigo */
+    --dw-accent: #B08D3D;        /* Brass Gold */
+    --dw-bg: #EDEFF3;            /* Pale Steel */
+    --dw-secondary: #4A5578;     /* Slate Blue */
+    --dw-muted: #8B8F9C;         /* Fog Gray */
+    --dw-success: #1F6E51;       /* Emerald */
+    --dw-danger: #A13D2E;        /* Rust Red */
+    --dw-white: #FFFFFF;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--dw-bg);
+    color: var(--dw-primary);
+}
+
+
+/* ---------- Navbar ---------- */
+.dw-navbar {
+    background-color: var(--dw-primary);
+    padding: 12px 0;
+}
+
+
+.dw-navbar .navbar-brand {
+    color: var(--dw-white);
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+/* Nav links get a small animated underline on hover/active instead of
+   just a color change — feels more deliberate than a flat color swap,
+   and it's a common pattern on premium sites (grows from center out) */
+.dw-navbar .nav-link {
+    position: relative;
+    color: var(--dw-muted);
+    font-weight: 500;
+    font-size: 0.92rem;
+    margin: 0 16px;
+    padding-bottom: 4px;
+}
+.dw-navbar .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background-color: var(--dw-accent);
+    transition: width 0.25s ease, left 0.25s ease;
+}
+.dw-navbar .nav-link:hover,
+.dw-navbar .nav-link.active {
+    color: var(--dw-white);
+}
+.dw-navbar .nav-link:hover::after,
+.dw-navbar .nav-link.active::after {
+    width: 100%;
+    left: 0;
+}
+
+/* Login/Register buttons — matched height and consistent sizing so
+   they sit level with each other regardless of text length */
+.dw-navbar .btn {
+    font-size: 0.9rem;
+    padding: 8px 20px;
+}
+
+/* ---------- Buttons ---------- */
+.dw-btn-primary {
+    background-color: var(--dw-accent);
+    color: var(--dw-primary);
+    border: none;
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 10px 22px;
+    transition: background-color 0.2s ease;
+}
+.dw-btn-primary:hover {
+    background-color: #c49a48;
+    color: var(--dw-primary);
+}
+.dw-btn-ghost {
+    background-color: transparent;
+    color: var(--dw-white);
+    border: 1px solid var(--dw-muted);
+    border-radius: 6px;
+    padding: 9px 20px;
+}
+.dw-btn-ghost:hover {
+    border-color: var(--dw-accent);
+    color: var(--dw-accent);
+}
+.dw-btn-outline {
+    background-color: transparent;
+    color: var(--dw-accent);
+    border: 1px solid var(--dw-accent);
+    border-radius: 6px;
+    padding: 8px 18px;
+}
+.dw-btn-outline:hover {
+    background-color: var(--dw-accent);
+    color: var(--dw-primary);
+}
+
+/* ---------- Cards ---------- */
+.dw-card {
+    background-color: var(--dw-white);
+    border-radius: 8px;
+    border: 1px solid #E1E4EA;
+    box-shadow: 0 2px 6px rgba(22, 27, 46, 0.06);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.dw-card:hover {
+    box-shadow: 0 8px 20px rgba(22, 27, 46, 0.12);
+    transform: translateY(-2px);
+}
+
+/* ---------- Badges ---------- */
+.dw-badge-premium {
+    background-color: var(--dw-accent);
+    color: var(--dw-primary);
+}
+.dw-badge-small {
+    background-color: var(--dw-secondary);
+    color: var(--dw-white);
+}
+.dw-badge-large {
+    background-color: var(--dw-primary);
+    color: var(--dw-white);
+}
+
+/* ---------- Text helpers ---------- */
+.dw-text-muted { color: var(--dw-muted); }
+.dw-text-accent { color: var(--dw-accent); }
+.dw-text-primary { color: var(--dw-primary); }
+
+/* ---------- Alerts ---------- */
+.dw-alert-success { background-color: #E6F1EC; color: var(--dw-success); border-color: var(--dw-success); }
+.dw-alert-error   { background-color: #F7E9E7; color: var(--dw-danger); border-color: var(--dw-danger); }
+.dw-alert-warning { background-color: #FBF1DF; color: #8a6d1f; border-color: var(--dw-accent); }
+
+/* ---------- Footer ---------- */
+.dw-footer {
+    background-color: var(--dw-primary);
+}
+.dw-footer h5, .dw-footer h6 {
+    font-weight: 600;
+}
+.dw-footer-links a {
+    color: var(--dw-muted);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+.dw-footer-links a:hover {
+    color: var(--dw-accent);
+}
+
+/* ---------- Forms ---------- */
+.form-control:focus {
+    border-color: var(--dw-accent);
+    box-shadow: 0 0 0 0.2rem rgba(176, 141, 61, 0.2);
+}
+label.dw-label {
+    font-weight: 500;
+    color: var(--dw-primary);
+    margin-bottom: 4px;
+}
+
+
 /* ---------- Home: hero section ---------- */
 .dw-hero {
     background-image: linear-gradient(rgba(22, 27, 46, 0.55), rgba(22, 27, 46, 0.75)),
@@ -236,4 +411,26 @@
     color: var(--dw-muted);
     font-size: 0.78rem;
     margin-top: 4px;
+}
+/* Reuse the same auth-form input styling for the contact form, since
+   Django's raw widgets don't come with Bootstrap classes attached */
+.dw-section input[type="text"],
+.dw-section input[type="email"],
+.dw-section textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #D7DAE1;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+.dw-section input:focus,
+.dw-section textarea:focus {
+    outline: none;
+    border-color: var(--dw-accent);
+    box-shadow: 0 0 0 0.2rem rgba(176, 141, 61, 0.15);
+}
+.dw-map-embed iframe {
+    width: 100%;
+    border-radius: 6px;
+    border: none;
 }

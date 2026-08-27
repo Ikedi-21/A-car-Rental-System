@@ -1,0 +1,38 @@
+<footer class="dw-footer">
+    <div class="container py-5">
+        <div class="row gy-4">
+            <div class="col-md-3">
+                <h5 class="text-white">Driftwood Motors</h5>
+                <p class="dw-text-muted small">Elevating the standard of premium vehicle rentals since 1998.</p>
+            </div>
+            <div class="col-md-3">
+                <h6 class="text-white">Quick Links</h6>
+                <ul class="list-unstyled dw-footer-links">
+                    <li><a href="{% url 'car_list' %}">Our Fleet</a></li>
+                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h6 class="text-white">Contact</h6>
+                <ul class="list-unstyled dw-footer-links">
+                    <li><i class="bi bi-geo-alt"></i> 1200 Elite Plaza, NY</li>
+                    <li><i class="bi bi-telephone"></i> +1 (555) DRIFT-MO</li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h6 class="text-white">Newsletter</h6>
+                <p class="dw-text-muted small">Receive exclusive offers and new arrivals.</p>
+                <!-- subscribe url doesn't exist yet either — form just
+                     won't submit anywhere functional until the contact
+                     app is built, but it won't break page rendering -->
+                <form method="post" action="{% url 'subscribe' %}" class="d-flex gap-2">
+                    {% csrf_token %}
+                    <input type="email" name="email" class="form-control form-control-sm" placeholder="Email address" required>
+                    <button type="submit" class="btn dw-btn-primary btn-sm">Join</button>
+                </form>
+            </div>
+        </div>
+        <hr class="border-secondary mt-4 mb-3">
+        <p class="dw-text-muted small mb-0 text-center">&copy; {% now "Y" %} Driftwood Motors. Premium Mobility Solutions.</p>
+    </div>
+</footer>
