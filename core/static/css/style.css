@@ -69,6 +69,25 @@ body {
     padding: 8px 20px;
 }
 
+.dw-navbar .dw-navbar-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    column-gap: 32px;   
+}
+.dw-navbar-collapse {
+    display: contents;
+}
+.dw-nav-center {
+    grid-column: 2;
+    display: flex;
+    margin: 0;
+}
+.dw-nav-actions {
+    grid-column: 3;
+    justify-self: end;
+}
+
 /* ---------- Buttons ---------- */
 .dw-btn-primary {
     background-color: var(--dw-accent);
@@ -356,27 +375,66 @@ label.dw-label {
         position: static;
     }
 }
-/* ---------- Auth pages (login/register) ---------- */
-.dw-auth-wrap {
-    min-height: 60vh;
+/* ---------- Auth pages: split layout (form + banner) ---------- */
+.dw-auth-split {
     display: flex;
-    align-items: center;
+    min-height: calc(100vh - 76px); /* fills viewport minus navbar height */
 }
 
-/* Django form widgets don't come with Bootstrap classes by default —
-   rather than adding a widget_tweaks dependency for two forms, targeting
-   the raw <input> tags directly here is simpler for a project this size */
-.dw-auth-wrap input[type="text"],
-.dw-auth-wrap input[type="email"],
-.dw-auth-wrap input[type="password"],
-.dw-auth-wrap input[type="tel"] {
+.dw-auth-form-side {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    background-color: var(--dw-white);
+}
+.dw-auth-form-wrap {
+    width: 100%;
+    max-width: 420px;
+}
+
+.dw-auth-banner-side {
+    flex: 1;
+    background-image: linear-gradient(rgba(22, 27, 46, 0.35), rgba(22, 27, 46, 0.75)),
+                       url('../images/hero-banner.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    padding: 48px;
+}
+.dw-auth-banner-overlay h2 {
+    color: var(--dw-white);
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 12px;
+}
+.dw-auth-banner-overlay p {
+    color: #D8DAE2;
+    max-width: 380px;
+}
+
+/* Banner hides on smaller screens — form takes the full width instead
+   of squeezing both columns into something unreadable */
+@media (max-width: 991px) {
+    .dw-auth-banner-side {
+        display: none;
+    }
+}
+
+/* Django form widgets don't come with Bootstrap classes by default */
+.dw-auth-form-wrap input[type="text"],
+.dw-auth-form-wrap input[type="email"],
+.dw-auth-form-wrap input[type="password"],
+.dw-auth-form-wrap input[type="tel"] {
     width: 100%;
     padding: 10px 14px;
     border: 1px solid #D7DAE1;
     border-radius: 6px;
     font-size: 0.95rem;
 }
-.dw-auth-wrap input:focus {
+.dw-auth-form-wrap input:focus {
     outline: none;
     border-color: var(--dw-accent);
     box-shadow: 0 0 0 0.2rem rgba(176, 141, 61, 0.15);
@@ -386,7 +444,7 @@ label.dw-label {
     position: relative;
 }
 .dw-password-wrap input {
-    padding-right: 40px; /* leaves room for the eye icon button */
+    padding-right: 40px;
 }
 .dw-toggle-password {
     position: absolute;
@@ -412,25 +470,96 @@ label.dw-label {
     font-size: 0.78rem;
     margin-top: 4px;
 }
-/* Reuse the same auth-form input styling for the contact form, since
-   Django's raw widgets don't come with Bootstrap classes attached */
-.dw-section input[type="text"],
-.dw-section input[type="email"],
-.dw-section textarea {
+/* ---------- Mobile off-canvas nav ---------- */
+.dw-offcanvas {
+    background-color: var(--dw-primary);
+    width: 280px;
+}
+.dw-offcanvas .navbar-brand {
+    color: var(--dw-white);
+    font-weight: 700;
+}
+.dw-offcanvas .nav-link {
+    color: var(--dw-muted);
+    font-size: 1rem;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.dw-offcanvas .nav-link:hover {
+    color: var(--dw-accent);
+}
+.dw-offcanvas .btn-close {
+    filter: invert(1) brightness(2); /* the default close icon is dark, invert it so it's visible against the indigo background */
+}
+/* ---------- Navbar toggler (hamburger icon) ---------- */
+/* Default Bootstrap toggler icon is dark lines, invisible against our
+dark navbar. This SVG data-URI override draws the three lines in
+   white instead, using the same Bootstrap icon shape */
+.dw-navbar .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.25);
+}
+.dw-navbar .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.9)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+
+/* ---------- Account sidebar nav (profile/bookings/change password) ---------- */
+.dw-account-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    color: var(--dw-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+.dw-account-nav-link:hover {
+    background-color: var(--dw-bg);
+    color: var(--dw-primary);
+}
+.dw-account-nav-link.active {
+    background-color: rgba(176, 141, 61, 0.1);
+    color: var(--dw-accent);
+    font-weight: 500;
+}
+
+/* ---------- Booking history ---------- */
+.dw-booking-thumb {
+    width: 100%;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+.dw-status-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+.dw-status-confirmed {
+    background-color: rgba(31, 110, 81, 0.1);
+    color: var(--dw-success);
+}
+.dw-status-pending {
+    background-color: rgba(176, 141, 61, 0.12);
+    color: var(--dw-accent);
+}
+.dw-status-cancelled {
+    background-color: rgba(161, 61, 46, 0.1);
+    color: var(--dw-danger);
+}
+.dw-status-completed {
+    background-color: rgba(74, 85, 120, 0.1);
+    color: var(--dw-secondary);
+}
+
+/* ---------- Auth-page inputs reused on profile/change password forms ---------- */
+.dw-section input[type="tel"] {
     width: 100%;
     padding: 10px 14px;
     border: 1px solid #D7DAE1;
     border-radius: 6px;
     font-size: 0.95rem;
-}
-.dw-section input:focus,
-.dw-section textarea:focus {
-    outline: none;
-    border-color: var(--dw-accent);
-    box-shadow: 0 0 0 0.2rem rgba(176, 141, 61, 0.15);
-}
-.dw-map-embed iframe {
-    width: 100%;
-    border-radius: 6px;
-    border: none;
 }

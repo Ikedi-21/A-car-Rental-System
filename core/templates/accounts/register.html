@@ -5,99 +5,98 @@
 
 {% block content %}
 
-<div class="container dw-section dw-auth-wrap">
-    <div class="row justify-content-center">
-        <div class="col-md-7 col-lg-6">
+<div class="dw-auth-split">
 
-            <div class="dw-card p-4 p-md-5">
-                <h3 class="text-center mb-1">Create Your Account</h3>
-                <p class="dw-text-muted text-center mb-4">Join Driftwood Motors to start booking.</p>
+    <div class="dw-auth-form-side">
+        <div class="dw-auth-form-wrap">
+            <h3 class="mb-1">Create Your Account</h3>
+            <p class="dw-text-muted mb-4">Join Driftwood Motors to start booking.</p>
 
-                <form method="post">
-                    {% csrf_token %}
+            <form method="post">
+                {% csrf_token %}
 
-                    <!-- First/last name side by side to keep the form from
-                         feeling like an endless single-column list — this
-                         is a registration form, not a wizard -->
-                    <div class="row g-3 mb-3">
-                        <div class="col-6">
-                            <label class="dw-label" for="{{ form.first_name.id_for_label }}">First Name</label>
-                            {{ form.first_name }}
-                            {% if form.first_name.errors %}
-                                <div class="dw-field-error">{{ form.first_name.errors|striptags }}</div>
-                            {% endif %}
-                        </div>
-                        <div class="col-6">
-                            <label class="dw-label" for="{{ form.last_name.id_for_label }}">Last Name</label>
-                            {{ form.last_name }}
-                            {% if form.last_name.errors %}
-                                <div class="dw-field-error">{{ form.last_name.errors|striptags }}</div>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="dw-label" for="{{ form.email.id_for_label }}">Email Address</label>
-                        {{ form.email }}
-                        {% if form.email.errors %}
-                            <div class="dw-field-error">{{ form.email.errors|striptags }}</div>
+                <div class="row g-3 mb-3">
+                    <div class="col-6">
+                        <label class="dw-label" for="{{ form.first_name.id_for_label }}">First Name</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            <div class="dw-field-error">{{ form.first_name.errors|striptags }}</div>
                         {% endif %}
                     </div>
-
-                    <div class="mb-3">
-                        <label class="dw-label" for="{{ form.phone.id_for_label }}">Phone Number</label>
-                        {{ form.phone }}
-                        {% if form.phone.errors %}
-                            <div class="dw-field-error">{{ form.phone.errors|striptags }}</div>
+                    <div class="col-6">
+                        <label class="dw-label" for="{{ form.last_name.id_for_label }}">Last Name</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            <div class="dw-field-error">{{ form.last_name.errors|striptags }}</div>
                         {% endif %}
                     </div>
+                </div>
 
-                    <div class="mb-3">
-                        <label class="dw-label" for="{{ form.password1.id_for_label }}">Password</label>
-                        <div class="dw-password-wrap">
-                            {{ form.password1 }}
-                            <button type="button" class="dw-toggle-password" data-target="#{{ form.password1.id_for_label }}">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </div>
-                        <!-- Django's UserCreationForm ships this help text
-                             (min length, not all-numeric, etc.) — worth
-                             keeping visible instead of hiding it, since it
-                             heads off failed submissions before they happen -->
-                        {% if form.password1.help_text %}
-                            <div class="dw-help-text">{{ form.password1.help_text|safe }}</div>
-                        {% endif %}
-                        {% if form.password1.errors %}
-                            <div class="dw-field-error">{{ form.password1.errors|striptags }}</div>
-                        {% endif %}
+                <div class="mb-3">
+                    <label class="dw-label" for="{{ form.email.id_for_label }}">Email Address</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="dw-field-error">{{ form.email.errors|striptags }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label class="dw-label" for="{{ form.phone.id_for_label }}">Phone Number</label>
+                    {{ form.phone }}
+                    {% if form.phone.errors %}
+                        <div class="dw-field-error">{{ form.phone.errors|striptags }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label class="dw-label" for="{{ form.password1.id_for_label }}">Password</label>
+                    <div class="dw-password-wrap">
+                        {{ form.password1 }}
+                        <button type="button" class="dw-toggle-password" data-target="#{{ form.password1.id_for_label }}">
+                            <i class="bi bi-eye"></i>
+                        </button>
                     </div>
+                    {% if form.password1.help_text %}
+                        <div class="dw-help-text">{{ form.password1.help_text|safe }}</div>
+                    {% endif %}
+                    {% if form.password1.errors %}
+                        <div class="dw-field-error">{{ form.password1.errors|striptags }}</div>
+                    {% endif %}
+                </div>
 
-                    <div class="mb-4">
-                        <label class="dw-label" for="{{ form.password2.id_for_label }}">Confirm Password</label>
-                        <div class="dw-password-wrap">
-                            {{ form.password2 }}
-                            <button type="button" class="dw-toggle-password" data-target="#{{ form.password2.id_for_label }}">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </div>
-                        {% if form.password2.errors %}
-                            <div class="dw-field-error">{{ form.password2.errors|striptags }}</div>
-                        {% endif %}
+                <div class="mb-4">
+                    <label class="dw-label" for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                    <div class="dw-password-wrap">
+                        {{ form.password2 }}
+                        <button type="button" class="dw-toggle-password" data-target="#{{ form.password2.id_for_label }}">
+                            <i class="bi bi-eye"></i>
+                        </button>
                     </div>
+                    {% if form.password2.errors %}
+                        <div class="dw-field-error">{{ form.password2.errors|striptags }}</div>
+                    {% endif %}
+                </div>
 
-                    <button type="submit" class="btn dw-btn-primary w-100">Register</button>
-                </form>
+                <button type="submit" class="btn dw-btn-primary w-100">Register</button>
+            </form>
 
-                <p class="text-center small dw-text-muted mt-4 mb-0">
-                    Already have an account? <a href="{% url 'login' %}" class="dw-text-accent text-decoration-none">Login here</a>
-                </p>
-            </div>
-
+            <p class="text-center small dw-text-muted mt-4 mb-0">
+                Already have an account? <a href="{% url 'login' %}" class="dw-text-accent text-decoration-none">Login here</a>
+            </p>
         </div>
     </div>
+
+    <div class="dw-auth-banner-side">
+        <div class="dw-auth-banner-overlay">
+            <h2>Your next journey<br>starts here.</h2>
+            <p>Create an account in under a minute and unlock the full Driftwood fleet.</p>
+        </div>
+    </div>
+
 </div>
-{% block extra_js %}
-<script src="{% static 'js/auth.js' %}"></script>
+
 {% endblock %}
 
+{% block extra_js %}
+<script src="{% static 'js/auth.js' %}"></script>
 {% endblock %}

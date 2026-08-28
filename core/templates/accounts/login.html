@@ -5,78 +5,69 @@
 
 {% block content %}
 
-<!-- Centered auth card. Not building a dedicated auth layout template for
-     just two pages (login/register) — a plain container with a narrow
-     column does the job without adding another base template to maintain. -->
-<div class="container dw-section dw-auth-wrap">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5">
+<!-- Split layout: form on the left, brand banner on the right (reversed
+     order on mobile via CSS so the form always comes first when stacked) -->
+<div class="dw-auth-split">
 
-            <div class="dw-card p-4 p-md-5">
-                <h3 class="text-center mb-1">Welcome Back</h3>
-                <p class="dw-text-muted text-center mb-4">Sign in to manage your bookings.</p>
+    <div class="dw-auth-form-side">
+        <div class="dw-auth-form-wrap">
+            <h3 class="mb-1">Welcome Back</h3>
+            <p class="dw-text-muted mb-4">Sign in to manage your bookings.</p>
 
-                <!-- action left blank on purpose — posts back to whatever
-                     URL rendered this page, so login errors re-render this
-                     same template instead of redirecting through a
-                     separate error page -->
-                <form method="post">
-                    {% csrf_token %}
+            <form method="post">
+                {% csrf_token %}
 
-                    <!-- non_field_errors covers things like "invalid
-                         credentials" which aren't tied to one specific
-                         input, so they need their own spot above the fields -->
-                    {% if form.non_field_errors %}
-                        <div class="alert dw-alert-error py-2">
-                            {{ form.non_field_errors }}
-                        </div>
+                {% if form.non_field_errors %}
+                    <div class="alert dw-alert-error py-2">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <label class="dw-label" for="{{ form.username.id_for_label }}">Email or Username</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <div class="dw-field-error">{{ form.username.errors|striptags }}</div>
                     {% endif %}
+                </div>
 
-                    <div class="mb-3">
-                        <label class="dw-label" for="{{ form.username.id_for_label }}">Email or Username</label>
-                        {{ form.username }}
-                        {% if form.username.errors %}
-                            <div class="dw-field-error">{{ form.username.errors|striptags }}</div>
-                        {% endif %}
+                <div class="mb-3">
+                    <label class="dw-label" for="{{ form.password.id_for_label }}">Password</label>
+                    <div class="dw-password-wrap">
+                        {{ form.password }}
+                        <button type="button" class="dw-toggle-password" data-target="#{{ form.password.id_for_label }}">
+                            <i class="bi bi-eye"></i>
+                        </button>
                     </div>
+                    {% if form.password.errors %}
+                        <div class="dw-field-error">{{ form.password.errors|striptags }}</div>
+                    {% endif %}
+                </div>
 
-                    <div class="mb-3">
-                        <label class="dw-label" for="{{ form.password.id_for_label }}">Password</label>
-                        <div class="dw-password-wrap">
-                            {{ form.password }}
-                            <!-- type="button" is important here — without it this
-                                 sits inside the form and submits the page on click -->
-                            <button type="button" class="dw-toggle-password" data-target="#{{ form.password.id_for_label }}">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </div>
-                        {% if form.password.errors %}
-                            <div class="dw-field-error">{{ form.password.errors|striptags }}</div>
-                        {% endif %}
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="remember_me" id="rememberMe">
+                        <label class="form-check-label small dw-text-muted" for="rememberMe">Remember me</label>
                     </div>
+                    <a href="{% url 'password_reset' %}" class="small dw-text-accent text-decoration-none">Forgot password?</a>
+                </div>
 
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="remember_me" id="rememberMe">
-                            <label class="form-check-label small dw-text-muted" for="rememberMe">Remember me</label>
-                        </div>
-                        <a href="{% url 'password_reset' %}" class="small dw-text-accent text-decoration-none">Forgot password?</a>
-                    </div>
+                <button type="submit" class="btn dw-btn-primary w-100">Login</button>
+            </form>
 
-                    <button type="submit" class="btn dw-btn-primary w-100">Login</button>
-                </form>
-
-                <p class="text-center small dw-text-muted mt-4 mb-0">
-                    Don't have an account? <a href="{% url 'register' %}" class="dw-text-accent text-decoration-none">Register here</a>
-                </p>
-            </div>
-
+            <p class="text-center small dw-text-muted mt-4 mb-0">
+                Don't have an account? <a href="{% url 'register' %}" class="dw-text-accent text-decoration-none">Register here</a>
+            </p>
         </div>
     </div>
-</div>
 
-{% block extra_js %}
-<script src="{% static 'js/auth.js' %}"></script>
-{% endblock %}
+    <div class="dw-auth-banner-side">
+        <div class="dw-auth-banner-overlay">
+            <h2>Drive further,<br>worry less.</h2>
+            <p>Join a fleet built on honest mileage and vehicles that are exactly as promised — every time.</p>
+        </div>
+    </div>
+
+</div>
 
 {% endblock %}
