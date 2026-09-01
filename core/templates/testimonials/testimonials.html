@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Testimonials — Driftwood Motors{% endblock %}
+
+{% block content %}
+
+<div class="container dw-section">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb dw-breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">Testimonials</li>
+        </ol>
+    </nav>
+
+    <h1>The Driftwood Standard</h1>
+    <p class="dw-text-muted mb-4">Hear from clients who've trusted us to get them where they're going.</p>
+
+    <div class="row g-4">
+
+        <!-- Submit form — only shown to logged-in users, since a
+             testimonial needs a real account attached to it -->
+        <div class="col-lg-4">
+            <div class="dw-card p-4">
+                {% if user.is_authenticated %}
+                    <h6 class="mb-3">Share Your Experience</h6>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="dw-label">Rating</label>
+                            <select name="rating" class="dw-form-control">
+                                <option value="5">5 — Excellent</option>
+                                <option value="4">4 — Great</option>
+                                <option value="3">3 — Good</option>
+                                <option value="2">2 — Fair</option>
+                                <option value="1">1 — Poor</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="dw-label">Your Message</label>
+                            <textarea name="message" class="dw-form-control" rows="4" placeholder="Tell us about your rental experience..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn dw-btn-primary w-100">Submit Testimonial</button>
+                    </form>
+                {% else %}
+                    <div class="text-center py-3">
+                        <i class="bi bi-chat-quote dw-text-accent" style="font-size: 2rem;"></i>
+                        <p class="dw-text-muted mt-2 mb-3">Log in to share your own experience with us.</p>
+                        <a href="{% url 'login' %}" class="btn dw-btn-primary">Login</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Testimonials list -->
+        <div class="col-lg-8">
+            <div class="row g-4">
+                {% for testimonial in testimonials %}
+                <div class="col-md-6">
+                    <div class="dw-card p-4 h-100">
+                        <div class="dw-stars mb-2">
+                            {% for i in testimonial.rating|ljust:testimonial.rating:"5" %}{% endfor %}
+                            {% for i in "12345"|slice:":5" %}
+                                {% if forloop.counter <= testimonial.rating %}
+                                    <i class="bi bi-star-fill"></i>
+                                {% else %}
+                                    <i class="bi bi-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <p class="fst-italic">"{{ testimonial.message }}"</p>
+                        <div class="d-flex align-items-center gap-2 mt-3">
+                            <div class="dw-avatar-placeholder"></div>
+                            <div>
+                                <div class="fw-medium small">{{ testimonial.user.get_full_name|default:testimonial.user.username }}</div>
+                                <div class="dw-text-muted" style="font-size: 0.75rem;">{{ testimonial.created_at|date:"M Y" }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12 text-center py-5">
+                    <i class="bi bi-chat-quote dw-text-muted" style="font-size: 2rem;"></i>
+                    <p class="dw-text-muted mt-2">No testimonials yet — be the first to share your experience.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -10,6 +10,8 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('contact/', include('contact.urls')),  
     path('bookings/', include('bookings.urls')), 
+    path('testimonials/', include('testimonials.urls')),
+    path('dashboard/', include('dashboard.urls')),
 ]
 
 if settings.DEBUG:

@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from .forms import RegisterForm, ProfileForm
+from .models import Profile
 
 
 def register_view(request):
@@ -34,7 +35,7 @@ def register_view(request):
 
 @login_required
 def profile_view(request):
-    profile = request.user.profile  
+    profile, created = Profile.objects.get_or_create(user=request.user)
     if request.method == 'POST':
         form = ProfileForm(request.POST, instance=profile, initial={
             'first_name': request.user.first_name,

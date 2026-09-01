@@ -68,25 +68,23 @@ body {
     font-size: 0.9rem;
     padding: 8px 20px;
 }
-
-.dw-navbar .dw-navbar-grid {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    column-gap: 32px;   
-}
 .dw-navbar-collapse {
     display: contents;
 }
-.dw-nav-center {
-    grid-column: 2;
+.dw-navbar .dw-navbar-grid {
     display: flex;
-    margin: 0;
+    align-items: center;
+    justify-content: space-between;
 }
-.dw-nav-actions {
-    grid-column: 3;
-    justify-self: end;
+
+.dw-nav-center {
+    margin-left: auto;
+    margin-right: 48px; 
 }
+/* .dw-nav-actions {
+    
+    
+} */
 
 /* ---------- Buttons ---------- */
 .dw-btn-primary {
@@ -181,14 +179,63 @@ body {
 }
 
 /* ---------- Forms ---------- */
-.form-control:focus {
-    border-color: var(--dw-accent);
-    box-shadow: 0 0 0 0.2rem rgba(176, 141, 61, 0.2);
+/* ---------- Forms: unified input/textarea/select styling ---------- */
+/* One canonical rule set for every text-style form control across the
+   whole site (auth pages, contact, profile, change password) — instead
+   of four separate overlapping declarations written at different times,
+   which is what caused inconsistent-looking boxes page to page */
+.dw-form-control,
+.dw-auth-form-wrap input[type="text"],
+.dw-auth-form-wrap input[type="email"],
+.dw-auth-form-wrap input[type="password"],
+.dw-auth-form-wrap input[type="tel"],
+.dw-section input[type="text"],
+.dw-section input[type="email"],
+.dw-section input[type="password"],
+.dw-section input[type="tel"],
+.dw-section select,
+.dw-section textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #D7DAE1;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background-color: var(--dw-white);
+    color: var(--dw-primary);
 }
-label.dw-label {
+
+.dw-form-control:focus,
+.dw-auth-form-wrap input:focus,
+.dw-section input:focus,
+.dw-section select:focus,
+.dw-section textarea:focus {
+    outline: none;
+    border-color: var(--dw-accent);
+    box-shadow: 0 0 0 0.2rem rgba(176, 141, 61, 0.15);
+}
+
+.dw-section textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Labels always stack above their input, full width, consistent weight */
+.dw-section label.dw-label,
+.dw-auth-form-wrap label.dw-label {
+    display: block;
+    width: 100%;
     font-weight: 500;
     color: var(--dw-primary);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+}
+
+/* Neutralizes the browser's native green/red validation outline so a
+   valid/invalid email field doesn't visually clash with our own
+   focus-state styling */
+.dw-section input:valid,
+.dw-section input:invalid {
+    box-shadow: none;
 }
 
 
@@ -333,7 +380,7 @@ label.dw-label {
 /* ---------- Booking card ---------- */
 .dw-booking-card {
     position: sticky;
-    top: 90px; /* clears the sticky navbar height */
+    top: 90px; 
 }
 .dw-price-large {
     font-size: 1.8rem;
@@ -397,7 +444,7 @@ label.dw-label {
 .dw-auth-banner-side {
     flex: 1;
     background-image: linear-gradient(rgba(22, 27, 46, 0.35), rgba(22, 27, 46, 0.75)),
-                       url('../images/hero-banner.jpg');
+    url('../images/hero-banner.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -556,6 +603,62 @@ dark navbar. This SVG data-URI override draws the three lines in
 }
 
 /* ---------- Auth-page inputs reused on profile/change password forms ---------- */
+.dw-section input[type="tel"] {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #D7DAE1;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+/* ---------- Account forms: consistency fix (profile, change password) ---------- */
+
+/* Labels weren't forced to block-level, so they were sitting inline
+   next to their input instead of stacking above it — browsers default
+   <label> to inline-block, which lets it share a line with whatever's
+   next to it if there's room */
+.dw-section label.dw-label {
+    display: block;
+    width: 100%;
+}
+
+/* Textarea (Address field) had no explicit sizing, so it fell back to
+   the browser's native default cols/rows box instead of matching the
+   other inputs' width and our card's padding */
+.dw-section textarea {
+    width: 100%;
+    min-height: 100px;
+    resize: vertical;
+    padding: 10px 14px;
+    border: 1px solid #D7DAE1;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: inherit;
+}
+.dw-section textarea:focus {
+    outline: none;
+    border-color: var(--dw-accent);
+    box-shadow: 0 0 0 0.2rem rgba(176, 141, 61, 0.15);
+}
+
+/* Chrome/Edge apply their own native validation-state border (that blue
+   glow on the Email field) independent of our CSS — this neutralizes it
+   so every field looks consistent regardless of browser validation state */
+.dw-section input:valid,
+.dw-section input:invalid,
+.dw-section input:-webkit-autofill {
+    box-shadow: none;
+}
+.dw-section input:focus:valid,
+.dw-section input:focus:invalid {
+    border-color: var(--dw-accent);
+    box-shadow: 0 0 0 0.2rem rgba(176, 141, 61, 0.15);
+}
+
+/* Ensures every text-style input in an account form is full width and
+   consistent, regardless of Django's auto-generated type attribute */
+.dw-section input[type="text"],
+.dw-section input[type="email"],
 .dw-section input[type="tel"] {
     width: 100%;
     padding: 10px 14px;
