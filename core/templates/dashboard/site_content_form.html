@@ -1,0 +1,55 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Page Content — Driftwood Motors Admin{% endblock %}
+
+{% block content %}
+
+<h4 class="mb-4">Site Content</h4>
+
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div class="dw-card p-4">
+            <h6 class="mb-3">Add / Update Content Block</h6>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="dw-label">Page Key</label>
+                    <input type="text" name="page_key" class="dw-form-control" placeholder="e.g. home_banner, about_mission" required>
+                </div>
+                <div class="mb-3">
+                    <label class="dw-label">Title</label>
+                    <input type="text" name="title" class="dw-form-control">
+                </div>
+                <div class="mb-4">
+                    <label class="dw-label">Content</label>
+                    <textarea name="content" class="dw-form-control" rows="5"></textarea>
+                </div>
+                <button type="submit" class="btn dw-btn-primary">Save Content</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="dw-card p-3">
+            <h6 class="p-2">Existing Content Blocks</h6>
+            <div class="table-responsive">
+                <table class="table dw-admin-table">
+                    <thead><tr><th>Key</th><th>Title</th><th>Updated</th></tr></thead>
+                    <tbody>
+                        {% for c in contents %}
+                        <tr>
+                            <td><code>{{ c.page_key }}</code></td>
+                            <td>{{ c.title }}</td>
+                            <td>{{ c.updated_at|date:"M d, Y" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" class="text-center dw-text-muted py-3">No content blocks yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

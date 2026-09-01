@@ -1,0 +1,76 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Dashboard — Driftwood Motors Admin{% endblock %}
+
+{% block content %}
+
+<h4 class="mb-4">Dashboard Overview</h4>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="dw-stat-card">
+            <i class="bi bi-people dw-text-accent"></i>
+            <div>
+                <div class="dw-stat-value">{{ user_count }}</div>
+                <div class="dw-stat-label">Registered Users</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="dw-stat-card">
+            <i class="bi bi-calendar-check dw-text-accent"></i>
+            <div>
+                <div class="dw-stat-value">{{ booking_count }}</div>
+                <div class="dw-stat-label">Total Bookings</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="dw-stat-card">
+            <i class="bi bi-envelope-paper dw-text-accent"></i>
+            <div>
+                <div class="dw-stat-value">{{ subscriber_count }}</div>
+                <div class="dw-stat-label">Subscribers</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="dw-stat-card">
+            <i class="bi bi-envelope dw-text-accent"></i>
+            <div>
+                <div class="dw-stat-value">{{ query_count }}</div>
+                <div class="dw-stat-label">New Queries</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dw-card p-4">
+    <h6 class="mb-3">Recent Bookings</h6>
+    <div class="table-responsive">
+        <table class="table dw-admin-table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Vehicle</th>
+                    <th>Dates</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in recent_bookings %}
+                <tr>
+                    <td>{{ booking.user.username }}</td>
+                    <td>{{ booking.car.brand.name }} {{ booking.car.name }}</td>
+                    <td>{{ booking.pickup_date }} → {{ booking.return_date }}</td>
+                    <td><span class="dw-status-pill dw-status-{{ booking.status }}">{{ booking.get_status_display }}</span></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="text-center dw-text-muted py-3">No bookings yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

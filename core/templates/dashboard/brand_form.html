@@ -1,0 +1,31 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}{% if brand %}Edit{% else %}Add{% endif %} Brand — Driftwood Motors Admin{% endblock %}
+
+{% block content %}
+
+<h4 class="mb-4">{% if brand %}Edit Brand{% else %}Add New Brand{% endif %}</h4>
+
+<div class="dw-card p-4" style="max-width: 500px;">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="dw-label">Brand Name</label>
+            <input type="text" name="name" class="dw-form-control" value="{{ brand.name|default:'' }}" required>
+        </div>
+
+        <div class="mb-4">
+            <label class="dw-label">Logo</label>
+            {% if brand.logo %}
+                <div class="mb-2"><img src="{{ brand.logo.url }}" style="height: 40px;"></div>
+            {% endif %}
+            <input type="file" name="logo" class="dw-form-control" accept="image/*">
+        </div>
+
+        <button type="submit" class="btn dw-btn-primary">{% if brand %}Save Changes{% else %}Create Brand{% endif %}</button>
+        <a href="{% url 'admin_brand_list' %}" class="btn dw-btn-outline">Cancel</a>
+    </form>
+</div>
+
+{% endblock %}

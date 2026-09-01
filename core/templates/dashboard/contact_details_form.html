@@ -1,0 +1,32 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Contact Details — Driftwood Motors Admin{% endblock %}
+
+{% block content %}
+
+<h4 class="mb-4">Contact Details</h4>
+
+<div class="dw-card p-4" style="max-width: 600px;">
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="dw-label">Address</label>
+            <textarea name="address" class="dw-form-control" rows="2">{{ details.address }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label class="dw-label">Phone</label>
+            <input type="text" name="phone" class="dw-form-control" value="{{ details.phone }}">
+        </div>
+        <div class="mb-3">
+            <label class="dw-label">Email</label>
+            <input type="email" name="email" class="dw-form-control" value="{{ details.email }}">
+        </div>
+        <div class="mb-4">
+            <label class="dw-label">Map Embed Code (optional)</label>
+            <textarea name="map_embed" class="dw-form-control" rows="3" placeholder="<iframe ...></iframe>">{{ details.map_embed }}</textarea>
+        </div>
+        <button type="submit" class="btn dw-btn-primary">Save Changes</button>
+    </form>
+</div>
+
+{% endblock %}

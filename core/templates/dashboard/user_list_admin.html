@@ -1,0 +1,40 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Users — Driftwood Motors Admin{% endblock %}
+
+{% block content %}
+
+<h4 class="mb-4">Registered Users</h4>
+
+<div class="dw-card p-3">
+    <div class="table-responsive">
+        <table class="table dw-admin-table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Joined</th>
+                    <th>Bookings</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td>{{ u.username }}</td>
+                    <td>{{ u.get_full_name|default:"—" }}</td>
+                    <td>{{ u.email }}</td>
+                    <td>{{ u.profile.phone|default:"—" }}</td>
+                    <td>{{ u.date_joined|date:"M d, Y" }}</td>
+                    <td>{{ u.bookings.count }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-center dw-text-muted py-3">No registered users yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Vehicles — Driftwood Motors Admin{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="mb-0">Vehicles</h4>
+    <a href="{% url 'admin_car_add' %}" class="btn dw-btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Add Vehicle</a>
+</div>
+
+<div class="dw-card p-3">
+    <div class="table-responsive">
+        <table class="table dw-admin-table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Vehicle</th>
+                    <th>Category</th>
+                    <th>Price/day</th>
+                    <th>Available</th>
+                    <th>Featured</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for car in cars %}
+                <tr>
+                    <td>
+                        {% if car.image %}
+                            <img src="{{ car.image.url }}" alt="{{ car.name }}" style="width: 48px; height: 32px; object-fit: cover; border-radius: 4px;">
+                        {% else %}
+                            <span class="dw-text-muted">—</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ car.brand.name }} {{ car.name }}</td>
+                    <td>{{ car.get_category_display }}</td>
+                    <td>${{ car.price_per_day }}</td>
+                    <td>
+                        {% if car.is_available %}<span class="dw-status-pill dw-status-confirmed">Yes</span>
+                        {% else %}<span class="dw-status-pill dw-status-cancelled">No</span>{% endif %}
+                    </td>
+                    <td>
+                        {% if car.is_featured %}<i class="bi bi-star-fill dw-text-accent"></i>{% else %}<i class="bi bi-star dw-text-muted"></i>{% endif %}
+                    </td>
+                    <td class="text-end">
+                        <a href="{% url 'admin_car_edit' car.id %}" class="btn btn-sm dw-btn-outline"><i class="bi bi-pencil"></i></a>
+                        <a href="{% url 'admin_car_delete' car.id %}" class="btn btn-sm dw-btn-outline" data-confirm="Delete this vehicle?"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7" class="text-center dw-text-muted py-3">No vehicles yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -666,3 +666,25 @@ dark navbar. This SVG data-URI override draws the three lines in
     border-radius: 6px;
     font-size: 0.95rem;
 }
+/* ---------- Admin dashboard stat cards ---------- */
+.dw-stat-card {
+    background-color: var(--dw-white);
+    border-radius: 8px;
+    border: 1px solid #E1E4EA;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.dw-stat-card i {
+    font-size: 1.8rem;
+}
+.dw-stat-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--dw-primary);
+}
+.dw-stat-label {
+    color: var(--dw-muted);
+    font-size: 0.82rem;
+}

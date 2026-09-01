@@ -1,0 +1,48 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Testimonials — Driftwood Motors Admin{% endblock %}
+
+{% block content %}
+
+<h4 class="mb-4">Testimonials</h4>
+
+<div class="dw-card p-3">
+    <div class="table-responsive">
+        <table class="table dw-admin-table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Rating</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in testimonials %}
+                <tr>
+                    <td>{{ t.user.username }}</td>
+                    <td>{{ t.rating }}/5</td>
+                    <td style="max-width: 300px;">{{ t.message|truncatewords:15 }}</td>
+                    <td>
+                        {% if t.is_active %}<span class="dw-status-pill dw-status-confirmed">Active</span>
+                        {% else %}<span class="dw-status-pill dw-status-cancelled">Inactive</span>{% endif %}
+                    </td>
+                    <td class="text-end">
+                        <form method="post" action="{% url 'admin_testimonial_toggle' t.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm dw-btn-outline">
+                                {% if t.is_active %}Deactivate{% else %}Activate{% endif %}
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="text-center dw-text-muted py-3">No testimonials yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
