@@ -23,17 +23,17 @@ body {
     background-color: var(--dw-primary);
     padding: 12px 0;
 }
-
-
 .dw-navbar .navbar-brand {
     color: var(--dw-white);
     font-weight: 700;
     font-size: 1.05rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 /* Nav links get a small animated underline on hover/active instead of
-   just a color change — feels more deliberate than a flat color swap,
-   and it's a common pattern on premium sites (grows from center out) */
+   just a color change */
 .dw-navbar .nav-link {
     position: relative;
     color: var(--dw-muted);
@@ -62,29 +62,59 @@ body {
     left: 0;
 }
 
-/* Login/Register buttons — matched height and consistent sizing so
-   they sit level with each other regardless of text length */
 .dw-navbar .btn {
     font-size: 0.9rem;
     padding: 8px 20px;
 }
+
 .dw-navbar-collapse {
     display: contents;
 }
+
 .dw-navbar .dw-navbar-grid {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
+/* Anchored to the true center of the navbar via absolute positioning,
+   completely independent of how wide the logo or the dropdown/buttons
+   on either side are — this is what actually guarantees dead-center,
+   rather than relying on both side columns being equal width */
 .dw-nav-center {
-    margin-left: auto;
-    margin-right: 48px; 
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    margin: 0;
 }
-/* .dw-nav-actions {
-    
-    
-} */
+
+/* No longer needs grid-column placement — it's just the last flex
+   child, and justify-content: space-between on the parent pushes it
+   flush to the far right on its own */
+.dw-nav-actions {
+    margin-left: auto;
+}
+
+@media (max-width: 991px) {
+    .dw-navbar .dw-navbar-grid {
+        justify-content: space-between;
+    }
+    .dw-navbar-collapse {
+        display: block;
+    }
+    .dw-nav-center {
+        flex-direction: column;
+        margin: 12px 0;
+    }
+    .dw-nav-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+}
 
 /* ---------- Buttons ---------- */
 .dw-btn-primary {
