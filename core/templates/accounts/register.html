@@ -33,6 +33,14 @@
                 </div>
 
                 <div class="mb-3">
+                    <label class="dw-label" for="{{ form.username.id_for_label }}">Username</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <div class="dw-field-error">{{ form.username.errors|striptags }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
                     <label class="dw-label" for="{{ form.email.id_for_label }}">Email Address</label>
                     {{ form.email }}
                     {% if form.email.errors %}

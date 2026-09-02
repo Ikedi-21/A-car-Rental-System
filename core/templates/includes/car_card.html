@@ -31,12 +31,12 @@
                 <span><i class="bi bi-fuel-pump"></i> {{ car.fuel_type }}</span>
             </div>
 
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
+            <div class="dw-card-footer">
+                <div class="dw-card-price">
                     <span class="fw-bold">${{ car.price_per_day }}</span>
                     <span class="dw-text-muted small">/day</span>
                 </div>
-                <a href="{% url 'car_detail' car.id %}" class="btn dw-btn-outline btn-sm">View Details</a>
+                <a href="{% url 'car_detail' car.id %}" class="btn dw-btn-outline btn-sm w-100">View Details</a>
             </div>
         </div>
     </div>

@@ -718,3 +718,17 @@ dark navbar. This SVG data-URI override draws the three lines in
     color: var(--dw-muted);
     font-size: 0.82rem;
 }
+/* ---------- Car card footer: price stacked above button ---------- */
+/* At 3-4 columns wide, "View Details" was wrapping onto two lines next
+   to the price in a side-by-side layout, throwing off vertical
+   alignment card to card. Stacking price above a full-width button
+   avoids the wrap entirely and keeps every card's footer the same
+   height regardless of price digit count. */
+.dw-card-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.dw-card-price {
+    font-size: 0.95rem;
+}
