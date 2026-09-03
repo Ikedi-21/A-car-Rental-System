@@ -732,3 +732,19 @@ dark navbar. This SVG data-URI override draws the three lines in
 .dw-card-price {
     font-size: 0.95rem;
 }
+/* ---------- Sort dropdown: fix native arrow overlapping text ---------- */
+/* Browsers reserve space for their own dropdown arrow, but a select
+   sized to "auto" width doesn't leave room for it — text and arrow end
+   up overlapping. This removes the native appearance and draws our own
+   arrow with proper spacing instead. */
+.dw-sort-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='%234A5578' d='M8 11L3 6h10z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+    padding-right: 36px;
+    min-width: 180px;
+}

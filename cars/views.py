@@ -7,8 +7,6 @@ def car_list_view(request):
     cars = Car.objects.filter(is_available=True).select_related('brand')
 
     # --- filtering ---
-    # everything comes straight from GET params, no session state involved,
-    # so the URL itself represents the exact filter combination applied
     selected_categories = request.GET.getlist('category')
     if selected_categories:
         cars = cars.filter(category__in=selected_categories)
@@ -47,6 +45,11 @@ def car_list_view(request):
     page_number = request.GET.get('page')
     cars_page = paginator.get_page(page_number)
 
+    # querystring for pagination links, with 'page' stripped out so the
+    # link's own ?page=N doesn't collide with whatever page we're currently on
+    querystring = request.GET.copy()
+    querystring.pop('page', None)
+
     context = {
         'cars': cars_page,
         'brands': Brand.objects.all(),
@@ -59,8 +62,7 @@ def car_list_view(request):
         'min_price': min_price,
         'max_price': max_price,
         'sort': sort,
-        # used by the sort dropdown's hidden form so it can resubmit the
-        # existing filters alongside the new sort value
+        'querystring': querystring.urlencode(),
         'current_filters': {
             'category': selected_categories,
             'brand': selected_brands,
@@ -73,8 +75,6 @@ def car_list_view(request):
 def car_detail_view(request, car_id):
     car = get_object_or_404(Car, id=car_id)
 
-    # same category, exclude the current car, cap at 3 — matches the
-    # "Explore Similar Vehicles" row in the design
     similar_cars = Car.objects.filter(
         category=car.category, is_available=True
     ).exclude(id=car.id).select_related('brand')[:3]
