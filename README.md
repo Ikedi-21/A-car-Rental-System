@@ -1,4 +1,4 @@
-# 🚗 Driftwood Motors — Car Rental System
+# 🚗 Driftwood Motors - Car Rental System
 
 A full-featured car rental web application built with **Django 6.1**, featuring customer-facing browsing/booking flows and a dedicated admin dashboard for complete fleet and business management.
 
@@ -24,7 +24,7 @@ A full-featured car rental web application built with **Django 6.1**, featuring 
 
 ## Overview
 
-Driftwood Motors is a semester project implementing a complete **Car Rental System (CRS)**. Customers can browse an available fleet, filter and sort vehicles, make booking requests, and manage their account. Site administrators get a dedicated dashboard to manage every aspect of the platform — cars, brands, bookings, users, testimonials, contact queries, newsletter subscribers, site content, and contact details.
+Driftwood Motors is a semester project implementing a complete **Car Rental System (CRS)**. Customers can browse an available fleet, filter and sort vehicles, make booking requests, and manage their account. Site administrators get a dedicated dashboard to manage every aspect of the platform - cars, brands, bookings, users, testimonials, contact queries, newsletter subscribers, site content, and contact details.
 
 ---
 
@@ -36,7 +36,7 @@ Driftwood Motors is a semester project implementing a complete **Car Rental Syst
 |---|---|
 | **Browse Fleet** | View all available cars with filtering (category, brand, fuel type, transmission, price range) and sorting |
 | **Car Detail** | Full vehicle info page with similar car suggestions |
-| **Booking** | Authenticated users can book a car — total price calculated server-side |
+| **Booking** | Authenticated users can book a car - total price calculated server-side |
 | **Booking History** | Users can view all past and current bookings |
 | **User Registration & Login** | Standard register/login/logout flow |
 | **Password Reset** | Full 4-step email-based password reset flow |
@@ -57,7 +57,7 @@ Driftwood Motors is a semester project implementing a complete **Car Rental Syst
 | **Testimonial Management** | Activate / deactivate customer testimonials |
 | **Contact Query Management** | View and resolve submitted contact queries |
 | **Subscriber Management** | View and delete newsletter subscribers |
-| **Site Content Editor** | Edit page content (titles, body text) by key — no code changes needed |
+| **Site Content Editor** | Edit page content (titles, body text) by key - no code changes needed |
 | **Contact Details Editor** | Update the public contact info (address, phone, email, map embed) |
 | **Admin Password Change** | Secure in-dashboard password change |
 
@@ -112,7 +112,7 @@ car-rental-system/
 
 ## Data Models
 
-### `accounts` — `Profile`
+### `accounts` - `Profile`
 Extends Django's built-in `User` via a `OneToOneField`.
 
 | Field | Type | Notes |
@@ -125,7 +125,7 @@ Extends Django's built-in `User` via a `OneToOneField`.
 
 ---
 
-### `cars` — `Brand`
+### `cars` - `Brand`
 
 | Field | Type | Notes |
 |---|---|---|
@@ -133,7 +133,7 @@ Extends Django's built-in `User` via a `OneToOneField`.
 | `logo` | ImageField | Optional logo, stored in `media/brands/` |
 | `created_at` | DateTimeField | Auto-set on creation |
 
-### `cars` — `Car`
+### `cars` - `Car`
 
 | Field | Type | Notes |
 |---|---|---|
@@ -152,7 +152,7 @@ Extends Django's built-in `User` via a `OneToOneField`.
 
 ---
 
-### `bookings` — `Booking`
+### `bookings` - `Booking`
 
 | Field | Type | Notes |
 |---|---|---|
@@ -167,7 +167,7 @@ Extends Django's built-in `User` via a `OneToOneField`.
 
 ---
 
-### `testimonials` — `Testimonial`
+### `testimonials` - `Testimonial`
 
 | Field | Type | Notes |
 |---|---|---|
@@ -179,15 +179,15 @@ Extends Django's built-in `User` via a `OneToOneField`.
 
 ---
 
-### `contact` — Three Models
+### `contact` - Three Models
 
-- **`ContactQuery`** — Messages from the contact form (status: `new` / `resolved`)
-- **`Subscriber`** — Newsletter signups (unique email per subscriber)
-- **`ContactDetails`** — Single-row site contact info (address, phone, email, map embed)
+- **`ContactQuery`** - Messages from the contact form (status: `new` / `resolved`)
+- **`Subscriber`** - Newsletter signups (unique email per subscriber)
+- **`ContactDetails`** - Single-row site contact info (address, phone, email, map embed)
 
 ---
 
-### `pages` — `SiteContent`
+### `pages` - `SiteContent`
 
 | Field | Type | Notes |
 |---|---|---|
@@ -387,7 +387,7 @@ Results are paginated at **9 cars per page** (3×3 grid on desktop).
 
 ## Booking Logic
 
-- Total price is recalculated **server-side** as `days × price_per_day` on every booking submission — client-side JS totals are display-only and cannot be tampered with.
+- Total price is recalculated **server-side** as `days × price_per_day` on every booking submission - client-side JS totals are display-only and cannot be tampered with.
 - Validation enforces `return_date > pickup_date`.
 - New bookings default to `pending`. Admins update the status to `confirmed`, `completed`, or `cancelled` from `/dashboard/bookings/`.
 
